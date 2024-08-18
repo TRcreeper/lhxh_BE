@@ -14,15 +14,15 @@ import com.lhxh.demo.pojo.Activity;
 public interface ActivityMapper {
 
     //新增
-    @Insert("insert into activity(title,content,cover_img,state,category_id,create_user,create_time,update_time) "+
-    "values(#{title},#{content},#{coverImg},#{state},#{categoryId},#{createUser},#{createTime},#{updateTime})")
+    @Insert("insert into activity(title,content,state,category_id,create_user,create_time,update_time) "+
+    "values(#{title},#{content},#{state},#{categoryId},#{createUser},#{createTime},#{updateTime})")
     void add(Activity activity);
 
     //活动列表
     List<Activity> list(Integer userId, Integer categoryId, String state);
 
     //更新
-    @Update("update activity set title=#{title},content=#{content},cover_img=#{coverImg},state=#{state},category_id=#{categoryId},update_time=#{updateTime} where id=#{id}")
+    @Update("update activity set title=#{title},content=#{content},state=#{state},category_id=#{categoryId},update_time=#{updateTime} where id=#{id}")
     void update(Activity activity);
 
     //获取活动详情

@@ -118,7 +118,6 @@ public class UserController {
             return Result.error("两次填写密码不一致");
         }
 
-
         //调用service完成更新
         UserService.updatePwd(newPwd);
         return Result.success();
