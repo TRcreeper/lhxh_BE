@@ -1,5 +1,6 @@
 package com.lhxh.demo.service;
 
+import com.lhxh.demo.pojo.PageBean;
 import com.lhxh.demo.pojo.User;
 
 public interface UserService {
@@ -11,5 +12,7 @@ public interface UserService {
     void update(User user);
     //更新密码
     void updatePwd(String newPwd);
+    //根据姓名查询
+    PageBean<User> list(Integer pageNum, Integer pageSize, String nickname);
 
 }

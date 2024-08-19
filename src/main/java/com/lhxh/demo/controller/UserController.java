@@ -1,5 +1,7 @@
 package com.lhxh.demo.controller;
 
+import com.lhxh.demo.pojo.Activity;
+import com.lhxh.demo.pojo.PageBean;
 import com.lhxh.demo.pojo.Result;
 import com.lhxh.demo.service.UserService;
 import com.lhxh.demo.utils.JwtUtil;
@@ -11,6 +13,7 @@ import jakarta.validation.constraints.Pattern;
 import com.lhxh.demo.pojo.User;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,5 +124,18 @@ public class UserController {
         //调用service完成更新
         UserService.updatePwd(newPwd);
         return Result.success();
+    }
+
+
+    //条件查询学生列表
+    @GetMapping
+    public Result<PageBean<User>> list(
+        Integer pageNum,
+        Integer pageSize,
+        @RequestParam(required = false) String nickname
+    )
+    {
+        PageBean<User> pb = UserService.list(pageNum,pageSize,nickname);
+        return Result.success(pb);
     }
 }

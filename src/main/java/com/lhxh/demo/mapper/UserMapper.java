@@ -1,5 +1,7 @@
 package com.lhxh.demo.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -25,5 +27,9 @@ public interface UserMapper {
     //重置密码
     @Update("update user set password=#{md5String},update_time=now() where id=#{id}")
     void updatePwd(String md5String, Integer id);
+
+    //根据名字查询
+    
+    List<User> list(String nickname);
 
 }
