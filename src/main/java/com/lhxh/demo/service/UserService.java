@@ -3,6 +3,8 @@ package com.lhxh.demo.service;
 import com.lhxh.demo.pojo.PageBean;
 import com.lhxh.demo.pojo.User;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 public interface UserService {
     //根据用户名查询用户
     User findByUserName(String username);
@@ -14,5 +16,9 @@ public interface UserService {
     void updatePwd(String newPwd);
     //根据姓名查询
     PageBean<User> list(Integer pageNum, Integer pageSize, String nickname);
+    //导出数据
+    void exportData(HttpServletResponse response);
+
+   
 
 }

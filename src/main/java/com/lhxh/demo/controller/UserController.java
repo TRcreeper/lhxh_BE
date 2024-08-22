@@ -8,6 +8,7 @@ import com.lhxh.demo.utils.JwtUtil;
 import com.lhxh.demo.utils.Md5Util;
 import com.lhxh.demo.utils.ThreadLocalUtil;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Pattern;
 
 import com.lhxh.demo.pojo.User;
@@ -37,16 +38,16 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @Validated
 public class UserController {
     @Autowired
-    private UserService UserService;
+    private UserService userService;
 
     @PostMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password){
         //查询
-        User u=UserService.findByUserName(username);
+        User u=userService.findByUserName(username);
         if(u==null)
         {
             //没有占用，注册
-            UserService.register(username,password);
+            userService.register(username,password);
             return Result.success();
         } else{
             //占用
@@ -59,7 +60,7 @@ public class UserController {
     public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password)
     {
         //根据用户名查询用户
-        User loginUser=UserService.findByUserName(username);
+        User loginUser=userService.findByUserName(username);
 
         if(loginUser==null){
             return Result.error("用户名错误");
@@ -83,7 +84,7 @@ public class UserController {
         String username=(String)map.get("username"); */
         Map<String,Object> map=ThreadLocalUtil.get();
         String username=(String)map.get("username");
-        User user=UserService.findByUserName(username);
+        User user=userService.findByUserName(username);
         return Result.success(user);
 
     }
@@ -91,7 +92,7 @@ public class UserController {
     @PutMapping("/update")
     public Result update(@RequestBody @Validated User user)
     {
-        UserService.update(user);
+        userService.update(user);
         return Result.success();
     }
 
@@ -110,7 +111,7 @@ public class UserController {
         //检验原密码是否正确
         Map<String,Object> map= ThreadLocalUtil.get();
         String username=(String) map.get("username");
-        User loginUser = UserService.findByUserName(username);
+        User loginUser = userService.findByUserName(username);
         if(!loginUser.getPassword().equals(Md5Util.getMD5String(oldPwd)))
         {
             return Result.error("原密码不正确");
@@ -122,7 +123,7 @@ public class UserController {
         }
 
         //调用service完成更新
-        UserService.updatePwd(newPwd);
+        userService.updatePwd(newPwd);
         return Result.success();
     }
 
@@ -135,7 +136,13 @@ public class UserController {
         @RequestParam(required = false) String nickname
     )
     {
-        PageBean<User> pb = UserService.list(pageNum,pageSize,nickname);
+        PageBean<User> pb = userService.list(pageNum,pageSize,nickname);
         return Result.success(pb);
+    }
+    
+    //导出数据
+    @GetMapping("/export")
+    public void export(HttpServletResponse response){
+        userService.exportData(response);
     }
 }
