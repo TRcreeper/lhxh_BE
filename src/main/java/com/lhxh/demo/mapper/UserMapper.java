@@ -29,7 +29,6 @@ public interface UserMapper {
     void updatePwd(String md5String, Integer id);
 
     //根据名字查询
-    
     List<User> list(String nickname);
 
 }

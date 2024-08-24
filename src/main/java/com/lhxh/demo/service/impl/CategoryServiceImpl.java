@@ -30,9 +30,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Category> list() {
-        Map<String,Object> map = ThreadLocalUtil.get();
-        Integer userId=(Integer) map.get("id");
-        return categoryMapper.list(userId);
+        // Map<String,Object> map = ThreadLocalUtil.get();
+        // Integer userId=(Integer) map.get("id");
+        return categoryMapper.list();
     }
 
     @Override

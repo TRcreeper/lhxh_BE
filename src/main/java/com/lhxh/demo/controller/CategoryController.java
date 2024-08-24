@@ -26,7 +26,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping
+    @PostMapping("/admin")
     public Result add(@RequestBody @Validated(Category.Add.class) Category category)
     {
         categoryService.add(category);
@@ -47,14 +47,14 @@ public class CategoryController {
         return Result.success(c);
     }
 
-    @PutMapping
+    @PutMapping("/admin")
     public Result update(@RequestBody @Validated(Category.Update.class) Category category)
     {
         categoryService.update(category);
         return Result.success();        
     }
 
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public Result delete(Integer id)
     {
         categoryService.deleteById(id);

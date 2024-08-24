@@ -32,14 +32,14 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @PostMapping
+    @PostMapping("/admin")
     public Result add(@RequestBody @Validated Activity activity)
     {
         activityService.add(activity);
         return Result.success();
     }
     
-    @PutMapping
+    @PutMapping("/admin")
     public Result update(@RequestBody @Validated Activity activity)
     {
         activityService.update(activity);
@@ -65,7 +65,7 @@ public class ActivityController {
         return Result.success(pb);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public Result delete(Integer id)
     {
         activityService.deleteById(id);

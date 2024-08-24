@@ -19,7 +19,7 @@ public interface ActivityMapper {
     void add(Activity activity);
 
     //活动列表
-    List<Activity> list(Integer userId, Integer categoryId, String state);
+    List<Activity> list(Integer categoryId, String state);
 
     //更新
     @Update("update activity set title=#{title},content=#{content},state=#{state},category_id=#{categoryId},update_time=#{updateTime} where id=#{id}")

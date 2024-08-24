@@ -1,5 +1,6 @@
 package com.lhxh.demo.controller;
 
+import com.lhxh.demo.config.CaptureConfig;
 import com.lhxh.demo.pojo.Activity;
 import com.lhxh.demo.pojo.PageBean;
 import com.lhxh.demo.pojo.Result;
@@ -30,9 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 
-
-
-
 @RestController
 @RequestMapping("/user")
 @Validated
@@ -57,7 +55,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password)
+    public Result<String> login(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password,String captcha,@RequestParam String key)
     {
         //根据用户名查询用户
         User loginUser=userService.findByUserName(username);
@@ -66,11 +64,20 @@ public class UserController {
             return Result.error("用户名错误");
         }
 
+        //验证码是否正确
+        if(!captcha.equals(CaptureConfig.captureMap.get(key)))
+        {
+            CaptureConfig.captureMap.remove(key);
+            return Result.error("验证码不正确");
+        }
+
+
         if(Md5Util.getMD5String(password).equals(loginUser.getPassword()))
         {
             Map<String,Object> claims=new HashMap<>();
             claims.put("id", loginUser.getId());
             claims.put("username", loginUser.getUsername());
+            claims.put("role", loginUser.getRole());
             String token = JwtUtil.genToken(claims);
             return Result.success(token);
         }
@@ -141,7 +148,7 @@ public class UserController {
     }
     
     //导出数据
-    @GetMapping("/export")
+    @GetMapping("/export/admin")
     public void export(HttpServletResponse response){
         userService.exportData(response);
     }

@@ -8,7 +8,7 @@
         select * from user
         <where>
                 <if test="nickname!=null">
-                        nickname=#{nickname}
+                        nickname LIKE CONCAT('%', #{nickname}, '%')
                 </if>
         </where>
      </select>   
