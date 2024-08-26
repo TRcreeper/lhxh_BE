@@ -17,12 +17,20 @@ public class RoleInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 获取当前用户角色
         Map<String,Object> map= ThreadLocalUtil.get();
-        String userRole=(String) map.get("role");
+        int roleLevel=(int) map.get("rolelevel");
         // 获取请求的URI
         String uri = request.getRequestURI();
         // 设定不同的权限控制
-        if (uri.endsWith("/admin") && !"管理员".equals(userRole)) {
-            // 如果访问的是/admin路径，但用户不是管理员，则返回403 Forbidden
+        if (uri.contains("/member") && roleLevel<2) {
+            // 如果访问的是/member路径，但用户不是会员，则返回403 Forbidden
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "你没有足够权限");
+            return false;
+        }
+        if (uri.contains("/worker") && roleLevel<3) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "你没有足够权限");
+            return false;
+        }
+        if (uri.contains("/president") && roleLevel<4) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "你没有足够权限");
             return false;
         }

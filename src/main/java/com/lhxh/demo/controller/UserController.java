@@ -2,9 +2,11 @@ package com.lhxh.demo.controller;
 
 import com.lhxh.demo.config.CaptureConfig;
 import com.lhxh.demo.pojo.Activity;
+import com.lhxh.demo.pojo.Member;
 import com.lhxh.demo.pojo.PageBean;
 import com.lhxh.demo.pojo.Result;
 import com.lhxh.demo.service.UserService;
+import com.lhxh.demo.service.MemberService;
 import com.lhxh.demo.utils.JwtUtil;
 import com.lhxh.demo.utils.Md5Util;
 import com.lhxh.demo.utils.ThreadLocalUtil;
@@ -16,6 +18,7 @@ import com.lhxh.demo.pojo.User;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private MemberService memberService;
 
     @PostMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,16}$") String username,@Pattern(regexp = "^\\S{5,16}$") String password){
@@ -74,10 +79,23 @@ public class UserController {
 
         if(Md5Util.getMD5String(password).equals(loginUser.getPassword()))
         {
+            Member m=memberService.findByUserId(loginUser.getId());
+            Integer rolelevel=1;
+            if(m==null){
+                rolelevel=1;
+            }else{
+                if("会员".equals(m.getRole())){
+                    rolelevel=2;
+                }else if("干事".equals(m.getRole())){
+                    rolelevel=3;
+                }else if("社长".equals(m.getRole())){
+                    rolelevel=4;
+                }
+            }
             Map<String,Object> claims=new HashMap<>();
             claims.put("id", loginUser.getId());
             claims.put("username", loginUser.getUsername());
-            claims.put("role", loginUser.getRole());
+            claims.put("rolelevel", rolelevel);
             String token = JwtUtil.genToken(claims);
             return Result.success(token);
         }
@@ -148,7 +166,7 @@ public class UserController {
     }
     
     //导出数据
-    @GetMapping("/export/admin")
+    @GetMapping("/export/worker")
     public void export(HttpServletResponse response){
         userService.exportData(response);
     }

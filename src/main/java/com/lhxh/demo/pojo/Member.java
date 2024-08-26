@@ -12,20 +12,18 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class User {
+public class Member {
     @NotNull
     private Integer id;
-    private String username;
-    @JsonIgnore //转为json字符串时忽略
-    private String password;
-    
+    private String userId;
+    @NotNull
+    private String name;
+    @NotNull
+    private String dormitory;
     @NotEmpty
-    @Pattern(regexp = "^\\S{1,10}$")
-    private String nickname;
-
-    
+    @Email
+    private String email;
+    private String role;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
 }
