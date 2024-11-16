@@ -2,6 +2,7 @@ package com.lhxh.demo.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -27,5 +28,12 @@ public interface MemberMapper {
     //根据userId查询会员
     @Select("select * from member where user_id=#{userId}")
     Member findByUserId(Integer userId);
+
+    //删除会员
+    @Delete("delete from member where id=#{id}")
+    void deleteById(Integer id);
+
+    @Update("update member set role=#{role} where id=#{id}")
+    void updateRole(Integer id, String role);
 
 }

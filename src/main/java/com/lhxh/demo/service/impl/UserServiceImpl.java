@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void update(User user) {
-        user.setUpdateTime(LocalDateTime.now());
+        // user.setUpdateTime(LocalDateTime.now());
         userMapper.update(user);
     }
 

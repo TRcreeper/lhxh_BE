@@ -26,14 +26,14 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/admin")
+    @PostMapping("/worker")
     public Result add(@RequestBody @Validated(Category.Add.class) Category category)
     {
         categoryService.add(category);
         return Result.success();
     }
 
-    @GetMapping
+    @GetMapping()
     public Result<List<Category>> list()
     {
         List<Category> cs=categoryService.list();
@@ -47,14 +47,14 @@ public class CategoryController {
         return Result.success(c);
     }
 
-    @PutMapping("/admin")
+    @PutMapping("/worker")
     public Result update(@RequestBody @Validated(Category.Update.class) Category category)
     {
         categoryService.update(category);
         return Result.success();        
     }
 
-    @DeleteMapping("/admin")
+    @DeleteMapping("/worker")
     public Result delete(Integer id)
     {
         categoryService.deleteById(id);

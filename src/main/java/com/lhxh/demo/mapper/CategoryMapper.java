@@ -12,8 +12,8 @@ import com.lhxh.demo.pojo.Category;
 @Mapper
 public interface CategoryMapper {
     //新增
-    @Insert("insert into category(category_name,category_alias,create_user,create_time,update_time) "+
-    "values(#{categoryName},#{categoryAlias},#{createUser},#{createTime},#{updateTime})")
+    @Insert("insert into category(category_name,category_alias,create_member) "+
+    "values(#{categoryName},#{categoryAlias},#{createMember})")
     void add(Category category);
 
     //查询所有
@@ -25,7 +25,7 @@ public interface CategoryMapper {
     Category findById(Integer id);
 
     //更新
-    @Select("update category set category_name=#{categoryName},category_alias=#{categoryAlias},update_time=#{updateTime} where id=#{id}")
+    @Select("update category set category_name=#{categoryName},category_alias=#{categoryAlias} where id=#{id}")
     void update(Category category);
 
     //删除

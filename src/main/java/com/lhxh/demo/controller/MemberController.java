@@ -4,7 +4,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,8 @@ import com.lhxh.demo.service.MemberService;
 import com.lhxh.demo.service.UserService;
 import com.lhxh.demo.utils.ThreadLocalUtil;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/member")
 
@@ -29,13 +33,20 @@ public class MemberController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public Result add(@RequestBody Member member){
-        memberService.add(member);
+    // //添加会员
+    // @PostMapping
+    // public Result add(@RequestBody Member member){
+    //     memberService.add(member);
+    //     return Result.success();
+    // }
+
+    @PostMapping("/worker")
+    public Result deleteApplyAndAddMember(@RequestParam Integer applyId, @RequestBody Member member){
+        memberService.deleteApplyAndAddMember(applyId,member);
         return Result.success();
     }
 
-    //条件查询学生列表
+    //条件查询会员列表
     @GetMapping
     public Result<PageBean<Member>> list(
         Integer pageNum,
@@ -59,13 +70,41 @@ public class MemberController {
 
 
     //普通用户修改接口
-    @PutMapping("/update")
+    @PutMapping()
     public Result update(@RequestBody @Validated Member member)
     {
+        //获取当前用户的会员ID
+        Map<String,Object> map=ThreadLocalUtil.get();
+        String username=(String)map.get("username");
+        User user=userService.findByUserName(username);
+        Member m=memberService.findByUserId(user.getId());
+
+        member.setId(m.getId());
+
         memberService.update(member);
         return Result.success();
     }
 
+        //导出数据
+    @GetMapping("/export/worker")
+    public void export(HttpServletResponse response){
+        memberService.exportData(response);
+    }
 
+    @DeleteMapping("/president")
+    public Result delete(Integer id)
+    {
+        memberService.deleteById(id);
+        return Result.success();
+    }
+
+    @PatchMapping("/president")
+    public Result updateRole(@RequestBody Map<String,String> params)
+    {
+        Integer id=Integer.parseInt(params.get("id"));
+        String role=params.get("role");
+        memberService.updateRole(id,role);
+        return Result.success();
+    }
     
 }

@@ -32,14 +32,14 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @PostMapping("/admin")
-    public Result add(@RequestBody @Validated Activity activity)
+    @PostMapping("/worker")
+    public Result add(@RequestBody  Activity activity)
     {
         activityService.add(activity);
         return Result.success();
     }
     
-    @PutMapping("/admin")
+    @PutMapping("/worker")
     public Result update(@RequestBody @Validated Activity activity)
     {
         activityService.update(activity);
@@ -65,7 +65,19 @@ public class ActivityController {
         return Result.success(pb);
     }
 
-    @DeleteMapping("/admin")
+    @GetMapping("/draft")
+    public Result<PageBean<Activity>> draftList(
+        Integer pageNum,
+        Integer pageSize,
+        @RequestParam(required = false) Integer categoryId
+        // @RequestParam(required = false) String state
+    )
+    {
+        PageBean<Activity> pb = activityService.draftList(pageNum,pageSize,categoryId);
+        return Result.success(pb);
+    }
+
+    @DeleteMapping("/worker")
     public Result delete(Integer id)
     {
         activityService.deleteById(id);

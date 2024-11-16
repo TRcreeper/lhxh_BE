@@ -17,11 +17,11 @@ public class Category {
     private String categoryName;
     @NotEmpty
     private String categoryAlias;
-    private Integer createUser;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
+    private Integer createMember;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // private LocalDateTime createTime;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // private LocalDateTime updateTime;
 
     //如果某个校验项没有指定分组1，则属于默认defaul分组
     //分组可以继承 A extends B

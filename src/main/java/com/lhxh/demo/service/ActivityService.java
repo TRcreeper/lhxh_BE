@@ -15,5 +15,6 @@ public interface ActivityService {
     Activity findById(Integer id);
     //删除活动
     void deleteById(Integer id);
+    PageBean<Activity> draftList(Integer pageNum, Integer pageSize, Integer categoryId);
 
 }

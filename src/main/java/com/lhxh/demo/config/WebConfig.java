@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer{
        //放行登录和注册接口
         registry.addInterceptor(loginInterceptor).excludePathPatterns("/user/login","/user/register","/captcha");
         //角色拦截器
-        registry.addInterceptor(roleInterceptor).addPathPatterns("/user/export/admin","/category/admin","/activity/admin");
+        registry.addInterceptor(roleInterceptor).excludePathPatterns("/user/login","/user/register","/captcha","/member/memberInfo");
+        // .addPathPatterns("/user/export/admin","/category/admin","/activity/admin");
     }
 }

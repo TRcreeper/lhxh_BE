@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import org.hibernate.validator.constraints.URL;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.lhxh.demo.anno.ProgressState;
 import com.lhxh.demo.anno.State;
+import com.lhxh.demo.utils.LocalDateTimeDeserializer;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,9 +27,18 @@ public class Activity {
     private String state;
     @NotNull
     private Integer categoryId;
-    private Integer createUser;
+    private Integer createMember;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // private LocalDateTime createTime;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // private LocalDateTime updateTime;
+    //参加时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime startTime;
+
+    //进行状态
+    //自定义注解
+    @ProgressState
+    private String progressState;
 }

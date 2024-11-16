@@ -16,16 +16,16 @@ public interface UserMapper {
     User findByUserName(String username);
     
     //添加
-    @Insert("insert into user(username,password,create_time,update_time)"+
-    " values(#{username},#{password},now(),now())")
+    @Insert("insert into user(username,password)"+
+    " values(#{username},#{password})")
     void add(String username, String password);
     
     //更新
-    @Update("update user set nickname=#{nickname},update_time=#{updateTime} where id=#{id}")
+    @Update("update user set nickname=#{nickname} where id=#{id}")
     void update(User user);
 
     //重置密码
-    @Update("update user set password=#{md5String},update_time=now() where id=#{id}")
+    @Update("update user set password=#{md5String} where id=#{id}")
     void updatePwd(String md5String, Integer id);
 
     //根据名字查询
